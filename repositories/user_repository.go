@@ -28,3 +28,6 @@ func (r *UserRepository) FindByEmail(email string)(*models.User, error){
 }
 
 //create menyimpan user baru ke database
+func (r *UserRepository) Create(user *models.User) error{
+	return config.DB.Create(user).Error
+}

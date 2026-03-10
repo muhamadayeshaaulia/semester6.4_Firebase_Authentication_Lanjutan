@@ -50,4 +50,13 @@ func initDatabase(){
 	}
 	sqlDB.SetMaxOpenConns(25) // maksimal 25 koneksi yang terbuka
 	sqlDB.SetMaxIdleConns(10) // maksimal 10 koneksi idle
+
+	err = DB.AutoMigrate(
+		&models.User{},
+		&models.Product{},
+	)
+	if err != nil{
+		log.Fatalf("AutoMigrate gagal : %v", err)
+	}
+	log.Println("Database terhubung dan table sudah di migrate")
 }

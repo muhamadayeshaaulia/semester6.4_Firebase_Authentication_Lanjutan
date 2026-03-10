@@ -35,4 +35,12 @@ func initDatabase(){
 	gormConfig := &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	}
+
+	//membuka koneksi ke database menggunakan GORM
+	var err error
+	DB, err = gorm.Open(mysql.Open(dsn), gormConfig)
+	if err != nil {
+		log.Fatalf("Gagal koneksi ke database : %v", err)
+	}
+	
 }

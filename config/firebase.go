@@ -21,11 +21,12 @@ func initFirebase(){
 	opt := option.WithAuthCredentialsFile(credPath)
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil{
-		log.Fatalf("Gagal init firebase: %v" err)
+		log.Fatalf("Gagal init firebase: %v", err)
 	}
 	// Mendapatkan Firebase Auth Client 
 	FirebaseAuth, err = app.Auth(context.Background())
 	if err != nil{
-		log.Fatalf("Gaga; mendapatkan Firebase Auth Client: %v", err)
+		log.Fatalf("Gagal mendapatkan Firebase Auth Client: %v", err)
 	}
+	log.Println("Firebase Admin SDK berhasil di inisialisasi")
 }

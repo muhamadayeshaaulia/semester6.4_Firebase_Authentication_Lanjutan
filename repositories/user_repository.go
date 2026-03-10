@@ -31,3 +31,8 @@ func (r *UserRepository) FindByEmail(email string)(*models.User, error){
 func (r *UserRepository) Create(user *models.User) error{
 	return config.DB.Create(user).Error
 }
+
+//update memperbarui data user
+func (r *UserRepository) Update(user *models.User) error{
+	return config.DB.Save(user).Error
+}

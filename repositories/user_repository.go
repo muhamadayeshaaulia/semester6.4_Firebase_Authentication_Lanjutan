@@ -20,3 +20,11 @@ func (r *UserRepository) FindByFirebaseUID(uid string) (*models.User, error){
 	}
 	return &user,nil
 }
+//find mail mencari user berdasarkan email yang terdaftar di firebase
+func (r *UserRepository) FindByEmail(email string)(*models.User, error){
+	var user models.User
+	result := config.DB.Where("email = ?", email).First(&user)
+	return &user,result.Error
+}
+
+//create menyimpan user baru ke database

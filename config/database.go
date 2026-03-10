@@ -43,4 +43,11 @@ func initDatabase(){
 		log.Fatalf("Gagal koneksi ke database : %v", err)
 	}
 	
+	//setup connection pool
+	sqlDB, err := DB.DB()
+	if err != nil{
+		log.Fatalf("Gagal mendapatkan sql.DB : %v", err)
+	}
+	sqlDB.SetMaxOpenConns(25) // maksimal 25 koneksi yang terbuka
+	sqlDB.SetMaxIdleConns(10) // maksimal 10 koneksi idle
 }

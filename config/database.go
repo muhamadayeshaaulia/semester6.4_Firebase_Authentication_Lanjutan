@@ -30,4 +30,9 @@ func initDatabase(){
 		"%s:%s@tcp(%s:%s)/%schartset=utf8mb4&parseTime=True&loc=Local",
 		user, password, host, port, dbname,
 	)
+
+	//konfigurasi GORM 
+	gormConfig := &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	}
 }

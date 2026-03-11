@@ -28,3 +28,10 @@ func (r *ProductRepository) FindAll (page, limit int, category string)
 	result := query.Offset(offset).Limit(limit).Find(&products)
 	return products, total, result.error
 }
+
+// findid mengambil satu produk berdasarkan id
+func (r *ProductRepository) FindByID(id uint) (*models.Product, error) {
+ var product models.Product
+ result := config.DB.First(&product, id)
+ return &product, result.Error
+}

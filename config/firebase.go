@@ -14,7 +14,7 @@ import (
 //instance Firebase Auth yang dipakai untuk verify token
 var FirebaseAuth *auth.Client
 
-func initFirebase(){
+func InitFirebase(){
 	credPath := os.Getenv("FIREBASE_CREDENTIALS_PATH")
 
 	//Inisialisasi firebase App dengan services account credentials

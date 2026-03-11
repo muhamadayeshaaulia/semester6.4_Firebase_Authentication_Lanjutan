@@ -43,3 +43,7 @@ func (r *ProductRepository) Create(product *models.Product) error {
 func (r *ProductRepository) Update(product *models.Product) error {
  return config.DB.Save(product).Error
 }
+// Delete soft-delete produk (tidak hapus dari DB)
+func (r *ProductRepository) Delete(id uint) error {
+ return config.DB.Delete(&models.Product{}, id).Error
+}

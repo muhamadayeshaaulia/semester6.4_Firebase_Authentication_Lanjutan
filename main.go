@@ -8,6 +8,7 @@ import (
 
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/config"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/routes"
+
 )
 
 func main() {
@@ -19,4 +20,6 @@ func main() {
 	config.InitFirebase()
 	//inisialisasi database dan AutoMigrate
 	config.InitDatabase()
+	//setup gin router dengan semua router
+	router:=routes.SetupRouter()
 }

@@ -26,8 +26,8 @@ func InitDatabase(){
 
 	//membuat format DSN (Data Source Name) untuk koneksi ke database
 	//Format : user:pass@tcp(host:port)/dbname?params
-	dsn := fmt.Sprint(
-		"%s:%s@tcp(%s:%s)/%schartset=utf8mb4&parseTime=True&loc=Local",
+	dsn := fmt.Sprintf(
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		user, password, host, port, dbname,
 	)
 

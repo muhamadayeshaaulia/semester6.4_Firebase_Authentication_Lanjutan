@@ -17,4 +17,6 @@ func main() {
 	}
 	//inisialisasi firebase adminSDK
 	config.InitFirebase()
+	//inisialisasi database dan AutoMigrate
+	config.InitDatabase()
 }

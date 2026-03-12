@@ -96,3 +96,6 @@ func (s *AuthService) generateJWT(user *models.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 }
+func (s *ProductService) Delete(id uint) error{
+	return s.ProductRepo.Delete(id)
+}

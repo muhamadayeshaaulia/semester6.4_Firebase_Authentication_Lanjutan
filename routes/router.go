@@ -38,4 +38,24 @@ func SetupRouter() *gin.Engine {
 		// Terima Firebase token → return Backend JWT
 		auth.POST("/verify-token", authHandler.VerifyToken)
 	}
+	protected := v1.Group("")
+	protected.Use(middleware.AuthMiddleware())
+	{
+		// Products — semua user terautentikasi bisa GET
+		products := protected.Group("/products")
+		{
+			products.GET("", productHandler.GetAll)      // GET /v1/products
+			products.GET("/:id", productHandler.GetByID) // GET /v1/products/:id
+			// Create, Update, Delete — hanya admin
+			adminProducts := products.Group("")
+			adminProducts.Use(middleware.AdminOnly())
+			{
+				adminProducts.POST("", productHandler.Create)       // POST /v1/products
+				adminProducts.PUT("/:id", productHandler.Update)    // PUT /v1/products/:id
+				adminProducts.DELETE("/:id", productHandler.Delete) //DELETE /v1/products/:id
+			}
+		}
+	}
+
+	return r
 }

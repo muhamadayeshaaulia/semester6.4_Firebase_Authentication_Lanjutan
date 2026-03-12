@@ -15,7 +15,6 @@ import (
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/config"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/models"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/repositories"
-
 )
 
 type AuthService struct {
@@ -30,6 +29,10 @@ func NewAuthService() *AuthService {
 // memastikan email sudah terverivikasi, dan return backend jwt
 func (s *AuthService) VerifyFirebaseToken(firebaseToken string) (string, *models.User, error) {
 	//verivikasi firebase ID Token Ke server google
-	token, err := config.FirebaseAuth.verifyIDToken(context.Background(),firebaseToken)
-	
+	token, err := config.FirebaseAuth.verifyIDToken(context.Background(), firebaseToken)
+	if err != nil {
+		return "", nil, errors.New("Firebase token tidak valid atau kadaluarsa")
+	}
+	//cek apakah emailsudah di verifikasi
+
 }

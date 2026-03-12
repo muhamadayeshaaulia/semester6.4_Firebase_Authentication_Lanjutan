@@ -68,5 +68,12 @@ func (s *AuthService) VerifyFirebaseToken(firebaseToken string) (string, *models
 			user.EmailVerified = true
 			s.userRepo.Update(user)
 		}
+
+		//generate backend JWT Token 
+		jwtToken, err := s.generateJWT(user)
+		if err != nil{
+			return "", nil,errors.New("gagal membuat token")
+		} 
+		return jwtToken, user, nil
 	}
 }

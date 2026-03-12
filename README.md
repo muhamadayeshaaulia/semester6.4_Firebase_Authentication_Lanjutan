@@ -26,7 +26,7 @@ Tahapannya:
 
 6. Copy apiKey saat menambahkan Web app
 
-   ![gambar_6](asstes/hal5.jpeg)
+   ![gambar_6](assets/hal5.jpeg)
 
 7. Buka Postman dan buat Environments dan tambahkan beberapa variable
 

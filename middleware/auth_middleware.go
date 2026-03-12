@@ -36,10 +36,10 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 		tokenString := parts[1]
 		// parse dan verivikasi jwt token
-		token, err := jwt.Parse(tokenString,func(token *jwt.Token)(interface{},error{
+		token, err := jwt.Parse(tokenString, func(token *jwt.Token)(interface{},error){
 			//memastikan algo yang di pakai adalah hs256
-			if _, ok := token.Method(*jwt.SigningMethodHMAC); !ok{
-				return nil, jwt,jwt.ErrSignatureInvalid
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok{
+				return nil, jwt.ErrSignatureInvalid
 			}
 			return [] byte(os.Getenv("JWT_SECRET")), nil
 		})
@@ -56,7 +56,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		if !ok {
 			c.AbortWithStatusJSON(http.StatusUnauthorized,gin.H{
 				"success" : false,
-				"message" : "Token Claims Tidak Valid"
+				"message" : "Token Claims Tidak Valid",
 			})
 			return
 		}
@@ -66,11 +66,10 @@ func AuthMiddleware() gin.HandlerFunc {
 		c.Set("role", claims["role"])
 		c.Set("firebase_uid", claims["firebase_uid"])
 		c.Next()// untuk melanjutkan ke handler berikutnya
-	)
-	}
+	}}
 	//AdminOnly middleware untuk role admin yang hanya bisa akses ini 
 	func AdminOnly() gin.HandlerFunc{
-		return func (c. *gin.Context){
+		return func (c *gin.Context){
 			role, _ := c.Get("role")
 			if role != "admin"{
 				c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
@@ -83,4 +82,4 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Next()
 		}
 	}
-}
+

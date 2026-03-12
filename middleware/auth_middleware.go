@@ -43,6 +43,23 @@ func AuthMiddleware() gin.HandlerFunc {
 			}
 			return [] byte(os.Getenv("JWT_SECRET")), nil
 		})
+		if err != nil || !token.Valid {
+			c.AbortWithStatusJSON(http.StatusUnauthorized,gin.H{
+				"succes" : false,
+				"message" : "Token tidak valid atau kadaluarsa",
+				"error_code": "INVALID_TOKEN",
+			})
+			return
+		}
+		// menyimpan claims ke context Gin agar bisa di akses hendler
+		claims, ok := token.Claims.(jwt.MapClaims)
+		if !ok {
+			c.AbortWithStatusJSON(http.StatusUnauthorized,gin.H{
+				"success" : false,
+				"message" : "Token Claims Tidak Valid"
+			})
+			return
+		}
 		
 	)
 	}

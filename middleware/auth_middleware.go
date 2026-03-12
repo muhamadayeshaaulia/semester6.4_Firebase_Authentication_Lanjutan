@@ -51,7 +51,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			})
 			return
 		}
-		// menyimpan claims ke context Gin agar bisa di akses hendler
+		// menyimpan claims ke context Gin agar bisa di akses handler
 		claims, ok := token.Claims.(jwt.MapClaims)
 		if !ok {
 			c.AbortWithStatusJSON(http.StatusUnauthorized,gin.H{
@@ -60,7 +60,12 @@ func AuthMiddleware() gin.HandlerFunc {
 			})
 			return
 		}
-		
+		//SET KE CONTEXT - BISA DI AKSES DI HANDLER 
+		c.Set("User_id", claims["sub"])
+		c.Set("email", claims["email"])
+		c.Set("role", claims["role"])
+		c.Set("firebase_uid", claims["firebase_uid"])
+		c.Next()// untuk melanjutkan ke handler berikutnya
 	)
 	}
 }

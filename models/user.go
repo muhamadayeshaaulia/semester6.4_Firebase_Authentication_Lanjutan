@@ -11,7 +11,7 @@ type User struct {
 	Name string `gorm:"size:100" json:"name"`
 	Role string `gorm:"size:20;default:user" json:"role"`
 	EmailVerified bool `gorm:"default:false"json:"email_verified"`
-	lastLoginAt *int `gorm:"index"json:"last_login_at,omitempty"`
+	LastLoginAt *int64 `gorm:"index"json:"last_login_at,omitempty"`
 }
 
 // gorm.Model memberikan fields:

@@ -56,7 +56,7 @@ func (s *AuthService) VerifyFirebaseToken(firebaseToken string) (string, *models
 			emailVerified: true,
 			LastLoginAt: &now,
 		}
-		if err := s.userRepo.if if err := s.userRepo == nil {
+		if err := s.userRepo == nil {
 			return "", nil, errors.New("gagal membuat user baru")
 		} else if err != nil{
 			return "",nil,errors.New("error mengambil data user")
@@ -92,5 +92,8 @@ func (s *AuthService) VerifyFirebaseToken(firebaseToken string) (string, *models
 			"iat" : time.Now().Unix(),
 			"exp":time.Now().Add(time.Hour * tome.Dutation(expireHours)).Unix(),
 		}
+		// membuat token dengan algo HS256 dan secret key 
+		token := jwt.NewWithClaims(jwt.SigningMethodES256,claims)
+		return token.SigenedString([]byte(os.Getenv("JWT_SECRET")))
 	}
 }

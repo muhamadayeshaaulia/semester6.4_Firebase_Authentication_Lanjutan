@@ -1,7 +1,6 @@
 package services
 
 import (
-	""
 	"context"
 	"errors"
 	"github"
@@ -75,5 +74,12 @@ func (s *AuthService) VerifyFirebaseToken(firebaseToken string) (string, *models
 			return "", nil,errors.New("gagal membuat token")
 		} 
 		return jwtToken, user, nil
+	}
+	//generate token jwt dengan payload user 
+	func (s *AuthService) generateJWT(user *models.User)(string, error){
+		expireHours, _ := strconv.Atol(OS.Getenv("JWT_EXPIRE_HOURS"))
+		if expireHours == 0 {
+			expireHours =24
+		}
 	}
 }

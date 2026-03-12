@@ -107,7 +107,7 @@ masukkan payload kedalam body:
 }
 ```
 
-![image_13](asset/carab.jpeg)
+![image_13](assets/carab.jpeg)
 
 sekarang ke bagian login
 untuk Url: https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{FIREBASE_API_KEY}}

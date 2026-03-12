@@ -8,7 +8,6 @@ import (
 
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/config"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/routes"
-
 )
 
 func main() {
@@ -23,8 +22,10 @@ func main() {
 	//setup gin router dengan semua router
 	router := routes.SetupRouter()
 	//port untuk menjalankan server
-	port:= os.Getenv(APP_PORT)
-	if port == ""{
+	port := os.Getenv(APP_PORT)
+	if port == "" {
 		port = "8080"
 	}
+	log.Printf("Server berjalan di http://localhost:%s", port)
+	log.Printf("Health check: http://localhost:%s/v1/health", port)
 }

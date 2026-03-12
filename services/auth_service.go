@@ -15,6 +15,7 @@ import (
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/config"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/models"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/repositories"
+
 )
 
 type AuthService struct {
@@ -34,5 +35,6 @@ func (s *AuthService) VerifyFirebaseToken(firebaseToken string) (string, *models
 		return "", nil, errors.New("Firebase token tidak valid atau kadaluarsa")
 	}
 	//cek apakah emailsudah di verifikasi
-
+	emailVerified, _ := token.Claims["EMAIL_NOT_VERIFIED"]
 }
+

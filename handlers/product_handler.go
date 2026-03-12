@@ -42,3 +42,18 @@ func (h *ProductHandler) GetAll(c *gin.Context) {
 		},
 	})
 }
+
+// GetByID - GET /products/:id
+func (h *ProductHandler) GetByID(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "IDtidak valid"})
+		return
+	}
+	product, err := h.productService.GetByID(uint(id))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"success": false, "message": "Produk tidak ditemukan"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"success": true, "data": product})
+}

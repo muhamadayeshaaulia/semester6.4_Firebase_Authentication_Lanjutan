@@ -25,4 +25,11 @@ func SetupRouter() *gin.Engine {
 	authHandler := handlers.NewAuthHandler()
 	productHandler := handlers.NewProductHandler()
 
+	v1 := r.Group("/v1")
+	{
+		// Health check — tidak perlu auth
+		v1.GET("/health", func(c *gin.Context) {
+			c.JSON(200, gin.H{"status": "ok", "service": "gin-firebase-backend"})
+		})
+	}
 }

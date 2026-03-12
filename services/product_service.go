@@ -9,3 +9,6 @@ import (
 type ProductService struct {
 	ProductRepo *repositories.ProductRepository
 }
+func NewProductService() *	ProductService{
+	return &ProductService{ProductRepo: repositories.NewProductRepository()}
+}

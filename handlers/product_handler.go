@@ -57,3 +57,19 @@ func (h *ProductHandler) GetByID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"success": true, "data": product})
 }
+
+// Create - POST /products (hanya admin)
+func (h *ProductHandler) Create(c *gin.Context) {
+	var req models.CreateProductRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": err.Error()})
+		return
+	}
+	product, err := h.productService.Create(&req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"success": false,
+			"message": "Gagal membuat produk"})
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{"success": true, "message": "Produk berhasil dibuat", "data": product})
+}

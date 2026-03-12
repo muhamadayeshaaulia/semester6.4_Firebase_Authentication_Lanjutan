@@ -22,7 +22,7 @@ func main() {
 	//setup gin router dengan semua router
 	router := routes.SetupRouter()
 	//port untuk menjalankan server
-	port := os.Getenv(APP_PORT)
+	port := os.Getenv("APP_PORT")
 	if port == "" {
 		port = "8080"
 	}

@@ -16,7 +16,7 @@ import (
 //DB instance GORM global yang di pakai di seluruh aplikasi
 var DB *gorm.DB
 
-func initDatabase(){
+func InitDatabase(){
 	//mengambil konfigurasi database dari environment variables
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")

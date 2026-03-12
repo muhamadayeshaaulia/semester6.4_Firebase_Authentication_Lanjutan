@@ -15,6 +15,7 @@ import (
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/config"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/models"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/repositories"
+
 )
 
 type AuthService struct {
@@ -38,4 +39,10 @@ func (s *AuthService) VerifyFirebaseToken(firebaseToken string) (string, *models
 	if !emailVerified {
 		return "", nil, errors.New("EMAIL_NOT_VERIFIED")
 	}
+	//mengambil data dari claims firebase token
+	uid:= token.UID
+	email, _ :=token.Claims["email"].(string)
+	name, _ := token.Claims["name"].(string)
+
+	
 }

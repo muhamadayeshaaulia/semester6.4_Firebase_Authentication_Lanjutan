@@ -23,7 +23,7 @@ func (s *ProductService) GetAll(page, limit int, category string) ([]models.Prod
 	return s.ProductRepo.FindAll(page, limit, category)
 }
 func (s *ProductService) GetByID(id uint) (*models.Product, error) {
-	return s.ProductRepo.FindAll(id)
+	return s.ProductRepo.FindByID(id)
 }
 func (s *ProductService) Create(req *models.CreateProductRequest) (*models.Product, error) {
 	product := &models.Product{

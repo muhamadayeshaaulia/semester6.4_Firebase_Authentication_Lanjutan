@@ -32,4 +32,10 @@ func SetupRouter() *gin.Engine {
 			c.JSON(200, gin.H{"status": "ok", "service": "gin-firebase-backend"})
 		})
 	}
+	// Auth routes (public)
+	auth := v1.Group("/auth")
+	{
+		// Terima Firebase token → return Backend JWT
+		auth.POST("/verify-token", authHandler.VerifyToken)
+	}
 }

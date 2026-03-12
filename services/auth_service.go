@@ -44,5 +44,29 @@ func (s *AuthService) VerifyFirebaseToken(firebaseToken string) (string, *models
 	email, _ :=token.Claims["email"].(string)
 	name, _ := token.Claims["name"].(string)
 
-	
+	//mencari user di database, buat jika belum ada (frist time log)
+	user, err := s.UserRepo.FindByFirebaseUID(uid)
+	if errors.Is(err, gorm.ErrRecordNotFound){
+		//user pertama kali login / bbuat user baru
+		now := time.Now().Unix()
+		user =&models.User{
+			FirebaseUID: uid,
+			Email: email,
+			Name : name,
+			Role: "user",
+			emailVerified: true,
+			LastLoginAt: &now,
+		}
+		if err := s.userRepo.if if err := s.userRepo == nil {
+			return "", nil, errors.New("gagal membuat user baru")
+		} else if err != nil{
+			return "",nil,errors.New("error mengambil data user")
+		}else{
+			//update last login 
+			now := time.Now().Unix()
+			user.LastLoginAt = &now
+			user.EmailVerified = true
+			s.userRepo.Update(user)
+		}
+	}
 }

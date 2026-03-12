@@ -81,5 +81,16 @@ func (s *AuthService) VerifyFirebaseToken(firebaseToken string) (string, *models
 		if expireHours == 0 {
 			expireHours =24
 		}
+		//payload yang di simpan dalam token 
+		claims := jwt.MapClaims{
+			"sub": user.ID,
+			"firebase_uid": user.firebaseUID,
+			"email": user.Email,
+			"name": user.Name,
+			"role": user.Role,
+			"email_verified": user.EmailVerified,
+			"iat" : time.Now().Unix(),
+			"exp":time.Now().Add(time.Hour * tome.Dutation(expireHours)).Unix(),
+		}
 	}
 }

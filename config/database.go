@@ -2,21 +2,20 @@ package config
 
 import (
 	"fmt"
-	"os"
 	"log"
+	"os"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/models"
-
 )
 
-//DB instance GORM global yang di pakai di seluruh aplikasi
+// DB instance GORM global yang di pakai di seluruh aplikasi
 var DB *gorm.DB
 
-func InitDatabase(){
+func InitDatabase() {
 	//mengambil konfigurasi database dari environment variables
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
@@ -31,7 +30,7 @@ func InitDatabase(){
 		user, password, host, port, dbname,
 	)
 
-	//konfigurasi GORM 
+	//konfigurasi GORM
 	gormConfig := &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	}
@@ -42,10 +41,10 @@ func InitDatabase(){
 	if err != nil {
 		log.Fatalf("Gagal koneksi ke database : %v", err)
 	}
-	
+
 	//setup connection pool
 	sqlDB, err := DB.DB()
-	if err != nil{
+	if err != nil {
 		log.Fatalf("Gagal mendapatkan sql.DB : %v", err)
 	}
 	sqlDB.SetMaxOpenConns(25) // maksimal 25 koneksi yang terbuka
@@ -55,7 +54,7 @@ func InitDatabase(){
 		&models.User{},
 		&models.Product{},
 	)
-	if err != nil{
+	if err != nil {
 		log.Fatalf("AutoMigrate gagal : %v", err)
 	}
 	log.Println("Database terhubung dan table sudah di migrate")

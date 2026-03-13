@@ -8,24 +8,23 @@ import (
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
 	"google.golang.org/api/option"
-
 )
 
-//instance Firebase Auth yang dipakai untuk verify token
+// instance Firebase Auth yang dipakai untuk verify token
 var FirebaseAuth *auth.Client
 
-func InitFirebase(){
+func InitFirebase() {
 	credPath := os.Getenv("FIREBASE_CREDENTIALS_PATH")
 
 	//Inisialisasi firebase App dengan services account credentials
 	opt := option.WithCredentialsFile(credPath)
 	app, err := firebase.NewApp(context.Background(), nil, opt)
-	if err != nil{
+	if err != nil {
 		log.Fatalf("Gagal init firebase: %v", err)
 	}
-	// Mendapatkan Firebase Auth Client 
+	// Mendapatkan Firebase Auth Client
 	FirebaseAuth, err = app.Auth(context.Background())
-	if err != nil{
+	if err != nil {
 		log.Fatalf("Gagal mendapatkan Firebase Auth Client: %v", err)
 	}
 	log.Println("Firebase Admin SDK berhasil di inisialisasi")

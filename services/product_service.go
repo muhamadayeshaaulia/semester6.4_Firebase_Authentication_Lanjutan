@@ -3,7 +3,6 @@ package services
 import (
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/models"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/repositories"
-
 )
 
 type ProductService struct {
@@ -63,6 +62,8 @@ func (s *ProductService) Update(id uint, req *models.UpdateProductRequest) (*mod
 	}
 
 	err = s.ProductRepo.Update(product)
-	return product,err
+	return product, err
 }
-
+func (s *ProductService) Delete(id uint) error {
+	return s.ProductRepo.Delete(id)
+}

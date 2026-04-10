@@ -4,7 +4,7 @@ import (
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/models"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/repositories"
 )
-
+// test perubahan
 type ProductService struct {
 	ProductRepo *repositories.ProductRepository
 }

@@ -1,5 +1,5 @@
 .env
-firebase-service-account.json
+firebase-key.json
 *.exe;
 *.test
 /tmp

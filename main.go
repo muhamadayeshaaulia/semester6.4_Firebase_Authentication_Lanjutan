@@ -3,9 +3,7 @@ package main
 import (
 	"log"
 	"os"
-
 	"github.com/joho/godotenv"
-
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/config"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/routes"
 )

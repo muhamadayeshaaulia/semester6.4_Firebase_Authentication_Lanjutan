@@ -13,7 +13,6 @@ import (
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/config"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/models"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/repositories"
-
 )
 
 type AuthService struct {
@@ -73,6 +72,26 @@ func (s *AuthService) VerifyFirebaseToken(firebaseToken string) (string, *models
 		return "", nil, errors.New("gagal membuat token")
 	}
 	return jwtToken, user, nil
+}
+func (s *AuthService) CreateUserInMySQL(uid, email, name string) (*models.User, error) {
+	var user models.User
+	err := config.DB.Where("firebase_uid = ?", uid).First(&user).Error
+
+	if err == nil {
+		return &user, nil 
+	}
+	newUser := models.User{
+		FirebaseUID: uid,
+		Email:       email,
+		Name:        name,
+		Role:        "user",
+	}
+
+	if err := config.DB.Create(&newUser).Error; err != nil {
+		return nil, err
+	}
+
+	return &newUser, nil
 }
 
 // generate token jwt dengan payload user

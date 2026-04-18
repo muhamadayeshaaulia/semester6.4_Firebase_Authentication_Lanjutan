@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/services"
-
 )
 
 type AuthHandler struct {
@@ -70,5 +69,32 @@ func (h *AuthHandler) VerifyToken(c *gin.Context) {
 				"created_at":     user.CreatedAt.Format(time.RFC3339),
 			},
 		},
+	})
+}
+
+func (h *AuthHandler) Register(c *gin.Context) {
+
+	var req struct {
+		UID   string `json:"uid" binding:"required"`
+		Name  string `json:"name" binding:"required"`
+		Email string `json:"email" binding:"required"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"success": false, "message": "Data tidak lengkap"})
+		return
+	}
+
+	// Panggil service untuk simpan ke MySQL
+	user, err := h.authService.CreateUserInMySQL(req.UID, req.Email, req.Name)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{
+		"success": true,
+		"message": "User berhasil dicatat di database",
+		"data":    user,
 	})
 }

@@ -2,12 +2,13 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/handlers"
 	"github.com/muhamadayeshaaulia/gin-firebase-backend/middleware"
 )
 
-func SetupRouter() *gin.Engine {
+func SetupRouter(db *gorm.DB) *gin.Engine {
     r := gin.Default()
 
 	r.Static("/uploads", "./public/uploads")
@@ -54,6 +55,12 @@ func SetupRouter() *gin.Engine {
                     adminProducts.PUT("/:id", productHandler.Update)
                     adminProducts.DELETE("/:id", productHandler.Delete)
                 }
+            }
+			cart := protected.Group("/cart")
+            {
+
+                cart.POST("/add", handlers.AddToCart(db)) 
+                cart.GET("", handlers.GetCart(db))
             }
         }
     }

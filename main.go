@@ -27,7 +27,7 @@ func main() {
 	log.Printf("Server berjalan di http://localhost:%s", port)
 	log.Printf("Health check: http://localhost:%s/v1/health", port)
 
-	if err := router.Run(":" + port); err != nil {
+	if err := router.Run("0.0.0.0:" + port); err != nil {
 		log.Fatalf("Gagal Menjalankan server : %v", err)
 	}
 }

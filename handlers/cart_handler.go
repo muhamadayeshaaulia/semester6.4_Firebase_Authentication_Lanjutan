@@ -42,3 +42,25 @@ func AddToCart(db *gorm.DB) gin.HandlerFunc {
 		}
 	}
 }
+
+func GetCart(db *gorm.DB) gin.HandlerFunc {
+    return func(c *gin.Context) {
+        // Ambil userID dari token login
+        userID := c.MustGet("userID").(uint)
+
+        var cartItems []models.Cart
+        // .Preload("Product") gunanya supaya data detail produk (nama, harga, gambar) 
+        // ikut terbawa, nggak cuma ID-nya doang.
+        err := db.Preload("Product").Where("user_id = ?", userID).Find(&cartItems).Error
+
+        if err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mengambil data keranjang"})
+            return
+        }
+
+        c.JSON(http.StatusOK, gin.H{
+            "success": true,
+            "data":    cartItems,
+        })
+    }
+}

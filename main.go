@@ -18,7 +18,8 @@ func main() {
 	//inisialisasi database dan AutoMigrate
 	config.InitDatabase()
 	//setup gin router dengan semua router
-	router := routes.SetupRouter()
+	db := config.DB
+	router := routes.SetupRouter(db)
 	//port untuk menjalankan server
 	port := os.Getenv("APP_PORT")
 	if port == "" {

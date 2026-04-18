@@ -15,7 +15,7 @@ import (
 // DB instance GORM global yang di pakai di seluruh aplikasi
 var DB *gorm.DB
 
-func InitDatabase() {
+func InitDatabase() *gorm.DB {
 	//mengambil konfigurasi database dari environment variables
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
@@ -53,9 +53,11 @@ func InitDatabase() {
 	err = DB.AutoMigrate(
 		&models.User{},
 		&models.Product{},
+		&models.Cart{},
 	)
 	if err != nil {
 		log.Fatalf("AutoMigrate gagal : %v", err)
 	}
 	log.Println("Database terhubung dan table sudah di migrate")
+		return DB
 }

@@ -24,54 +24,56 @@ func NewAuthService() *AuthService {
 }
 
 // verifyFirebaseTokendari firebase
-// memastikan email sudah terverivikasi, dan return backend jwt
 func (s *AuthService) VerifyFirebaseToken(firebaseToken string) (string, *models.User, error) {
-	//verivikasi firebase ID Token Ke server google
-	token, err := config.FirebaseAuth.VerifyIDToken(context.Background(), firebaseToken)
-	if err != nil {
-		return "", nil, errors.New("Firebase token tidak valid atau kadaluarsa")
-	}
-	//cek apakah emailsudah di verifikasi
-	emailVerified, _ := token.Claims["email_verified"].(bool)
-	if !emailVerified {
-		return "", nil, errors.New("EMAIL_NOT_VERIFIED")
-	}
-	//mengambil data dari claims firebase token
-	uid := token.UID
-	email, _ := token.Claims["email"].(string)
-	name, _ := token.Claims["name"].(string)
+    token, err := config.FirebaseAuth.VerifyIDToken(context.Background(), firebaseToken)
+    if err != nil {
+        return "", nil, errors.New("Firebase token tidak valid atau kadaluarsa")
+    }
 
-	//mencari user di database, buat jika belum ada (frist time log)
-	user, err := s.userRepo.FindByFirebaseUID(uid)
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		//user pertama kali login / bbuat user baru
-		now := time.Now().Unix()
-		user = &models.User{
-			FirebaseUID:   uid,
-			Email:         email,
-			Name:          name,
-			Role:          "user",
-			EmailVerified: true,
-			LastLoginAt:   &now,
-		}
-		if err := s.userRepo.Create(user); err != nil {
-			return "", nil, errors.New("gagal membuat user baru")
-		} else if err != nil {
-			return "", nil, errors.New("error mengambil data user")
-		} else {
-			//update last login
-			now := time.Now().Unix()
-			user.LastLoginAt = &now
-			user.EmailVerified = true
-			s.userRepo.Update(user)
-		}
-	}
-	//generate backend JWT Token
-	jwtToken, err := s.generateJWT(user)
-	if err != nil {
-		return "", nil, errors.New("gagal membuat token")
-	}
-	return jwtToken, user, nil
+    emailVerified, _ := token.Claims["email_verified"].(bool)
+    if !emailVerified {
+        return "", nil, errors.New("EMAIL_NOT_VERIFIED")
+    }
+
+    uid := token.UID
+    email, _ := token.Claims["email"].(string)
+    name, _ := token.Claims["name"].(string)
+
+    user, err := s.userRepo.FindByFirebaseUID(uid)
+    
+    if errors.Is(err, gorm.ErrRecordNotFound) {
+        now := time.Now().Unix()
+        user = &models.User{
+            FirebaseUID:   uid,
+            Email:         email,
+            Name:          name,
+            Role:          "user",
+            EmailVerified: true,
+            LastLoginAt:   &now,
+        }
+        if err := s.userRepo.Create(user); err != nil {
+            return "", nil, errors.New("gagal membuat user baru")
+        }
+    } else if err != nil {
+        return "", nil, errors.New("error mengambil data user")
+    } else {
+        // Kalau user sudah ada, kita harus update status verifikasinya dan last login
+        now := time.Now().Unix()
+        user.LastLoginAt = &now
+        user.EmailVerified = true // SINKRONISASI STATUS DI SINI
+        
+        // Simpan perubahan ke database EliteBook
+        if err := s.userRepo.Update(user); err != nil {
+            return "", nil, errors.New("gagal update data user")
+        }
+    }
+
+    // Generate JWT (Sekarang claims email_verified di JWT pasti true)
+    jwtToken, err := s.generateJWT(user)
+    if err != nil {
+        return "", nil, errors.New("gagal membuat token")
+    }
+    return jwtToken, user, nil
 }
 func (s *AuthService) CreateUserInMySQL(uid, email, name string) (*models.User, error) {
 	var user models.User

@@ -90,3 +90,37 @@ func GetCart(db *gorm.DB) gin.HandlerFunc {
 		})
 	}
 }
+
+func ReduceFromCart(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var input struct {
+			ProductID uint `json:"product_id" binding:"required"`
+		}
+
+		if err := c.ShouldBindJSON(&input); err != nil {
+			c.JSON(400, gin.H{"error": "Input tidak valid"})
+			return
+		}
+
+		val, _ := c.Get("userID")
+		userID := val.(uint)
+
+		var cart models.Cart
+		// Cari item yang sesuai user dan produknya
+		err := db.Where("user_id = ? AND product_id = ?", userID, input.ProductID).First(&cart).Error
+
+		if err == nil {
+			if cart.Quantity > 1 {
+				// Kurangi quantity jika lebih dari 1
+				db.Model(&cart).Update("quantity", cart.Quantity-1)
+				c.JSON(200, gin.H{"success": true, "message": "Jumlah dikurangi"})
+			} else {
+				// Hapus permanen jika sisa 1 lalu dikurangi
+				db.Delete(&cart)
+				c.JSON(200, gin.H{"success": true, "message": "Item dihapus dari keranjang"})
+			}
+		} else {
+			c.JSON(404, gin.H{"error": "Item tidak ditemukan di keranjang"})
+		}
+	}
+}

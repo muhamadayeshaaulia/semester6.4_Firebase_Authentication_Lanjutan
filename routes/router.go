@@ -62,6 +62,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
                 cart.POST("/add", handlers.AddToCart(db)) 
                 cart.GET("", handlers.GetCart(db))
                 cart.POST("/reduce", handlers.ReduceFromCart(db))
+                cart.DELETE("", handlers.ClearCart(db))
             }
         }
     }

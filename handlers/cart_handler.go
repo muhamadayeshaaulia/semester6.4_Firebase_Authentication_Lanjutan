@@ -124,3 +124,17 @@ func ReduceFromCart(db *gorm.DB) gin.HandlerFunc {
 		}
 	}
 }
+func ClearCart(db *gorm.DB) gin.HandlerFunc {
+    return func(c *gin.Context) {
+        val, _ := c.Get("userID")
+        userID := val.(uint)
+
+        // Hapus semua item di tabel carts milik user ini
+        if err := db.Where("user_id = ?", userID).Delete(&models.Cart{}).Error; err != nil {
+            c.JSON(500, gin.H{"error": "Gagal menghapus keranjang"})
+            return
+        }
+
+        c.JSON(200, gin.H{"success": true, "message": "Keranjang berhasil dikosongkan"})
+    }
+}

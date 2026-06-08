@@ -64,6 +64,20 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
                 cart.POST("/reduce", handlers.ReduceFromCart(db))
                 cart.DELETE("", handlers.ClearCart(db))
             }
+
+            transactions := protected.Group("/transactions")
+            {
+                transactions.POST("", handlers.CreateTransaction)
+                transactions.GET("", handlers.GetUserTransactions)
+                transactions.GET("/:invoice_id", handlers.GetTransaction)
+            }
+
+            wallet := protected.Group("/wallet")
+            {
+                wallet.GET("", handlers.GetBalance)
+                wallet.POST("/topup", handlers.TopUp)
+                wallet.POST("/pay", handlers.PayTransaction)
+            }
         }
     }
 

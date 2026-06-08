@@ -132,5 +132,8 @@ func TopUp(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Topup successful",
 		"balance": user.Balance,
+		"invoice_id": invoiceID,
+		"amount": req.Amount,
+		"date": time.Now().Format(time.RFC3339),
 	})
 }

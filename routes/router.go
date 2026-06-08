@@ -35,8 +35,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
         auth := v1.Group("/auth")
         {
-            auth.POST("/register", authHandler.Register) 
-            
+            auth.POST("/register", authHandler.Register)
             auth.POST("/verify-token", authHandler.VerifyToken)
         }
 

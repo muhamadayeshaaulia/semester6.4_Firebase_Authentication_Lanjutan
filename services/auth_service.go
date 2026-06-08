@@ -60,7 +60,7 @@ func (s *AuthService) VerifyFirebaseToken(firebaseToken string) (string, *models
         // Kalau user sudah ada, kita harus update status verifikasinya dan last login
         now := time.Now().Unix()
         user.LastLoginAt = &now
-        user.EmailVerified = true // SINKRONISASI STATUS DI SINI
+        user.EmailVerified = true 
         
         // Simpan perubahan ke database EliteBook
         if err := s.userRepo.Update(user); err != nil {

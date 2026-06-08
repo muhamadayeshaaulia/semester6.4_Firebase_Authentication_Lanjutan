@@ -129,11 +129,11 @@ func (h *ProductHandler) Update(c *gin.Context) {
 
 		if err := c.SaveUploadedFile(file, savePath); err == nil {
 			// Hapus file lama jika sebelumnya adalah file lokal
-			if strings.Contains(oldProduct.ImageURL, "192.168.68.136") {
+			if strings.Contains(oldProduct.ImageURL, "192.168.100.156") {
 				oldFile := "./public/uploads/" + filepath.Base(oldProduct.ImageURL)
 				os.Remove(oldFile)
 			}
-			imageURL := "http://192.168.68.136:8080/uploads/" + filename
+			imageURL := "http://192.168.100.156:8080/uploads/" + filename
 			req.ImageURL = &imageURL
 		}
 	}

@@ -12,6 +12,10 @@ import (
 func main() {
 	godotenv.Load()
 	config.InitDatabase()
+
+	// Menghapus isi tabel products agar tidak terjadi duplikat saat seeder dijalankan ulang
+	config.DB.Exec("DELETE FROM products")
+
 	products := []models.Product{
 		{Name: "Nasi Goreng Spesial", Price: 25000, Category: "Makanan", Stock: 50,
 			Description: "Nasi goreng dengan telur dan ayam",

@@ -6,7 +6,7 @@ type Product struct {
     gorm.Model
     Name        string  `gorm:"size:200;not null;index" json:"name"`
     Description string  `gorm:"type:text" json:"description"`
-    Price       float64 `gorm:"not null" json:"price"` 
+    Price       float64 `gorm:"not null" json:"price"`
     Stock       int     `gorm:"default:0" json:"stock"`
     Category    string  `gorm:"size:100;index" json:"category"`
     ImageURL    string  `gorm:"size:500" json:"image_url"`
@@ -23,10 +23,10 @@ type CreateProductRequest struct {
 }
 
 type UpdateProductRequest struct {
-	Name        *string  `json:"name" form:"name" binding:"omitempty,min=2"` 
+	Name        *string  `json:"name" form:"name" binding:"omitempty,min=2"`
     Description *string  `json:"description" form:"description"`
     Price       *float64 `json:"price" form:"price" binding:"omitempty,gt=0"`
-    Stock       *int     `json:"stock" form:"stock" binding:"omitempty,min=0"` 
+    Stock       *int     `json:"stock" form:"stock" binding:"omitempty,min=0"`
     Category    *string  `json:"category" form:"category"`
     ImageURL    *string  `json:"image_url" form:"image_url"`
 }

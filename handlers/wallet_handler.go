@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -117,6 +118,16 @@ func TopUp(c *gin.Context) {
 
 	user.Balance += req.Amount
 	config.DB.Save(&user)
+
+	invoiceID := fmt.Sprintf("TOPUP-%d", time.Now().Unix())
+	tx := models.Transaction{
+		UserID:      userID.(uint),
+		InvoiceID:   invoiceID,
+		TotalAmount: req.Amount,
+		Status:      "success",
+		PaymentMethod: "e-money",
+	}
+	config.DB.Create(&tx)
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Topup successful",

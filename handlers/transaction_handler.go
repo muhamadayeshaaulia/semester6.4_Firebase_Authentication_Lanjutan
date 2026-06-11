@@ -37,6 +37,21 @@ func CreateTransaction(c *gin.Context) {
 		return
 	}
 
+	// Update Stock and Sold untuk setiap produk di keranjang
+	var cartItems []models.Cart
+	config.DB.Where("user_id = ?", userID).Find(&cartItems)
+	for _, item := range cartItems {
+		var product models.Product
+		if err := config.DB.First(&product, item.ProductID).Error; err == nil {
+			product.Stock -= item.Quantity
+			if product.Stock < 0 {
+				product.Stock = 0
+			}
+			product.Sold += item.Quantity
+			config.DB.Save(&product)
+		}
+	}
+
 	// Setelah tagihan dibuat, kita juga mengosongkan keranjang (asumsi user mem-checkout semua di keranjang)
 	config.DB.Where("user_id = ?", userID).Delete(&models.Cart{})
 

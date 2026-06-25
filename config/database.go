@@ -55,6 +55,7 @@ func InitDatabase() *gorm.DB {
 		&models.Product{},
 		&models.Cart{},
 		&models.Transaction{},
+		&models.TransactionItem{},
 	)
 	if err != nil {
 		log.Fatalf("AutoMigrate gagal : %v", err)

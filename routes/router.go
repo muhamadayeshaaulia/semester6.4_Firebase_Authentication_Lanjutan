@@ -69,6 +69,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
                 transactions.POST("", handlers.CreateTransaction)
                 transactions.GET("", handlers.GetUserTransactions)
                 transactions.GET("/:invoice_id", handlers.GetTransaction)
+                transactions.PUT("/:invoice_id", handlers.UpdateTransactionStatus)
             }
 
             wallet := protected.Group("/wallet")

@@ -15,6 +15,8 @@ type Transaction struct {
 // Request untuk membuat transaksi baru dari E-Commerce
 type CreateTransactionRequest struct {
 	TotalAmount float64 `json:"total_amount" binding:"required,gt=0"`
+	ProductID   *uint   `json:"product_id,omitempty"`
+	Quantity    *int    `json:"quantity,omitempty"`
 }
 
 // Request untuk aplikasi E-Money saat melakukan pembayaran
